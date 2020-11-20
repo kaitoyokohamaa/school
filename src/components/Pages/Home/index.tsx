@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../../Organisms/Cards";
-import Button from "../../Atoms/Button";
+import Post from "../../Organisms/PostModal";
 import MoreButton from "../../Atoms/MoreButton";
 import { Row, Col } from "antd";
 import styled from "styled-components";
 import Header from "../../Organisms/Header";
+import firebase from "../../../firebase";
+import { firebasePostContents } from "../../Organisms/PostModal";
 const HomeDiv = styled.div`
   background: #f7f7f7;
   width: 1000px;
@@ -19,48 +21,39 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function Index() {
+  const [bords, setBoards] = useState<firebase.firestore.DocumentData>([]);
+  useEffect(() => {
+    const db = firebase.firestore();
+    const chatRef = db.collection("board");
+    chatRef.onSnapshot((boards) => {
+      let boardContents: firebase.firestore.DocumentData = [];
+      boards.forEach((contents) => {
+        boardContents.push(contents.data());
+      });
+      setBoards(boardContents);
+    });
+  }, []);
+
   return (
     <>
       <Header />
       <HomeDiv>
         <Row>
           <Col span={8}>
-            {" "}
-            <Button />
+            <Post />
           </Col>
           <Col span={16}>
-            <Card
-              title={"子供に話しかけてくる他人って迷惑？"}
-              body={
-                "子供と出掛けると知らない人に話しかけられたりします。子供は挨拶は自分からしたり相手にされたらちゃんとしますが、何か質問されると内容によっては黙ってしまいます。私も人と話すのが苦手なので、知らない人にいきなり話しかけられてびっくりしてるのもあると思いますが…"
-              }
-            />
-            <Card
-              title={"子供に話しかけてくる他人って迷惑？"}
-              body={
-                "子供と出掛けると知らない人に話しかけられたりします。子供は挨拶は自分からしたり相手にされたらちゃんとしますが、何か質問されると内容によっては黙ってしまいます。私も人と話すのが苦手なので、知らない人にいきなり話しかけられてびっくりしてるのもあると思いますが…"
-              }
-            />
-            <Card
-              title={"子供に話しかけてくる他人って迷惑？"}
-              body={
-                "子供と出掛けると知らない人に話しかけられたりします。子供は挨拶は自分からしたり相手にされたらちゃんとしますが、何か質問されると内容によっては黙ってしまいます。私も人と話すのが苦手なので、知らない人にいきなり話しかけられてびっくりしてるのもあると思いますが…"
-              }
-            />
-            <Card
-              title={"子供に話しかけてくる他人って迷惑？"}
-              body={
-                "子供と出掛けると知らない人に話しかけられたりします。子供は挨拶は自分からしたり相手にされたらちゃんとしますが、何か質問されると内容によっては黙ってしまいます。私も人と話すのが苦手なので、知らない人にいきなり話しかけられてびっくりしてるのもあると思いますが…"
-              }
-            />
-            <Card
-              title={"子供に話しかけてくる他人って迷惑？"}
-              body={
-                "子供と出掛けると知らない人に話しかけられたりします。子供は挨拶は自分からしたり相手にされたらちゃんとしますが、何か質問されると内容によっては黙ってしまいます。私も人と話すのが苦手なので、知らない人にいきなり話しかけられてびっくりしてるのもあると思いますが…"
-              }
-            />
+            {bords &&
+              bords.map((boardFields: firebasePostContents) => (
+                <Card
+                  key={boardFields.body}
+                  title={boardFields.title}
+                  body={boardFields.body}
+                />
+              ))}
+
             <ButtonWrapper>
-              <MoreButton />
+              {bords && bords.length > 6 && <MoreButton />}
             </ButtonWrapper>
           </Col>
         </Row>
