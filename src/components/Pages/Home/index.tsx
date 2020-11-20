@@ -8,7 +8,7 @@ import Header from "../../Organisms/Header";
 import firebase from "../../../firebase";
 import { firebasePostContents } from "../../Organisms/PostModal";
 const HomeDiv = styled.div`
-  background: #f7f7f7;
+  background-color: #fff;
   width: 1000px;
   margin-top: 50px;
   margin: 0 auto;
