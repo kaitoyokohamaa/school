@@ -7,14 +7,20 @@ import styled from "styled-components";
 import Header from "../../Organisms/Header";
 import firebase from "../../../firebase";
 import { firebasePostContents } from "../../Organisms/PostModal";
-const HomeDiv = styled.div`
-  background: #f7f7f7;
+import { Link } from "react-router-dom";
+
+type boardsList = {
+  boardIds: string;
+  contentList: firebasePostContents;
+};
+export const HomeDiv = styled.div`
+  background-color: #fff;
   width: 1000px;
   margin-top: 50px;
   margin: 0 auto;
   padding: 50px 0;
 `;
-const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div`
   text-align: center;
   width: 600px;
   margin-top: 24px;
@@ -22,18 +28,23 @@ const ButtonWrapper = styled.div`
 
 export default function Index() {
   const [bords, setBoards] = useState<firebase.firestore.DocumentData>([]);
+
   useEffect(() => {
     const db = firebase.firestore();
-    const chatRef = db.collection("board");
-    chatRef.onSnapshot((boards) => {
+    const ref = db.collection("board");
+    ref.onSnapshot((boards) => {
       let boardContents: firebase.firestore.DocumentData = [];
+
       boards.forEach((contents) => {
-        boardContents.push(contents.data());
+        boardContents.push({
+          boardIds: contents.id,
+          contentList: contents.data(),
+        });
       });
       setBoards(boardContents);
     });
   }, []);
-
+  console.log(bords);
   return (
     <>
       <Header />
@@ -44,12 +55,15 @@ export default function Index() {
           </Col>
           <Col span={16}>
             {bords &&
-              bords.map((boardFields: firebasePostContents) => (
-                <Card
-                  key={boardFields.body}
-                  title={boardFields.title}
-                  body={boardFields.body}
-                />
+              bords.map((boardFields: boardsList) => (
+                <div key={boardFields.boardIds}>
+                  <Link to={`/home/${boardFields.boardIds}`}>
+                    <Card
+                      title={boardFields.contentList.title}
+                      body={boardFields.contentList.body}
+                    />
+                  </Link>
+                </div>
               ))}
 
             <ButtonWrapper>
