@@ -8,7 +8,7 @@ export type firebasePostContents = {
   name: string;
   title: string;
   body: string;
-  createdAt: firebase.firestore.FieldValue;
+  createdAt: firebase.firestore.Timestamp;
 };
 export default function Index() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -26,7 +26,7 @@ export default function Index() {
       name,
       title,
       body,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: firebase.firestore.Timestamp.now(),
     };
     firebase.firestore().collection("board").add(boardContents);
     setModalVisible(false);

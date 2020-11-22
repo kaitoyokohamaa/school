@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../Organisms/Header";
 import firebase from "../../../firebase";
-import Card from "../../Organisms/Cards";
+import HomeDetailCard from "../../Organisms/HomeDetailCards";
 import { Row, Col } from "antd";
 import Post from "../../Organisms/PostModal";
 import { firebasePostContents } from "../../Organisms/PostModal";
+import { HomeDiv } from "../Home";
+type boardsList = {
+  contentList: firebasePostContents;
+};
 export default function Index(props: any) {
   const [bords, setBoards] = useState<firebase.firestore.DocumentData>([]);
 
@@ -16,29 +20,30 @@ export default function Index(props: any) {
     ref
       .doc(boardId)
       .onSnapshot(async (boards: firebase.firestore.DocumentData) => {
-        await doBoardArray.push(boards.data());
+        await doBoardArray.push({ contentList: boards.data() });
+        setBoards(doBoardArray);
       });
-    if (doBoardArray.length !== []) {
-      setBoards(doBoardArray);
-    }
   }, [props.match.params.boardId]);
 
   return (
     <>
       <Header />
-      <Row>
-        <Col span={8}>
-          <Post />
-        </Col>
-        <Col span={16}>
-          {bords.length > 0 &&
-            bords.map((boardFields: firebasePostContents) => (
-              <div key={boardFields.name}>
-                <Card title={boardFields.title} body={boardFields.body} />
-              </div>
-            ))}
-        </Col>
-      </Row>
+      <HomeDiv>
+        <Row>
+          <Col span={24}>
+            {bords &&
+              bords.map((boardFields: boardsList) => (
+                <div key={boardFields.contentList.name}>
+                  <HomeDetailCard
+                    name={boardFields.contentList.name}
+                    time={boardFields.contentList.createdAt}
+                    body={boardFields.contentList.body}
+                  />
+                </div>
+              ))}
+          </Col>
+        </Row>
+      </HomeDiv>
     </>
   );
 }

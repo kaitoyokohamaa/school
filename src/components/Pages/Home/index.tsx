@@ -28,7 +28,10 @@ export const ButtonWrapper = styled.div`
 
 export default function Index() {
   const [bords, setBoards] = useState<firebase.firestore.DocumentData>([]);
-
+  const [sliceBoards, setSliceBoards] = useState<
+    firebase.firestore.DocumentData
+  >([]);
+  let sliceBoardsArray: firebase.firestore.DocumentData = [];
   useEffect(() => {
     const db = firebase.firestore();
     const ref = db.collection("board");
@@ -42,9 +45,18 @@ export default function Index() {
         });
       });
       setBoards(boardContents);
+      if (boardContents.length > 0) {
+        sliceBoardsArray = boardContents.slice(0, 5);
+        setSliceBoards(sliceBoardsArray);
+      }
     });
   }, []);
-  console.log(bords);
+
+  const handleMore = () => {
+    sliceBoardsArray = bords;
+    setSliceBoards(sliceBoardsArray);
+  };
+  console.log(sliceBoardsArray);
   return (
     <>
       <Header />
@@ -54,8 +66,8 @@ export default function Index() {
             <Post />
           </Col>
           <Col span={16}>
-            {bords &&
-              bords.map((boardFields: boardsList) => (
+            {sliceBoards.length > 0 &&
+              sliceBoards.map((boardFields: boardsList) => (
                 <div key={boardFields.boardIds}>
                   <Link to={`/home/${boardFields.boardIds}`}>
                     <Card
@@ -66,8 +78,8 @@ export default function Index() {
                 </div>
               ))}
 
-            <ButtonWrapper>
-              {bords && bords.length > 6 && <MoreButton />}
+            <ButtonWrapper onClick={handleMore}>
+              {sliceBoards && sliceBoards.length < 6 && <MoreButton />}
             </ButtonWrapper>
           </Col>
         </Row>
