@@ -11,6 +11,15 @@ const Time = styled.p`
   font-size: 11px;
   color: #999;
 `;
+const Replay = styled.p`
+display: inline-block;
+padding-left: 18px;
+border-bottom: 1px solid #f78789;
+vertical-align: bottom;
+text-decoration: none;
+color: #f78789;
+background-size: 16px 16px;
+`;
 
 const Body = styled.p``;
 type Props = {
@@ -35,6 +44,7 @@ const Index: FC<Props> = ({ body, name, time }) => {
       <Time>{`${CurrentHours}時${CurrentMinutes}分`}</Time>
 
       <Body>{body}</Body>
+      <Replay>スレに返信</Replay>
     </Card>
   );
 };
