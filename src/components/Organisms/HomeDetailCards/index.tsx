@@ -3,6 +3,7 @@ import "antd/dist/antd.css";
 import { Card } from "antd";
 import styled from "styled-components";
 import firebase from "../../../firebase";
+
 const Name = styled.p`
   color: #fa6868;
   font-size: 105%;
@@ -10,15 +11,6 @@ const Name = styled.p`
 const Time = styled.p`
   font-size: 11px;
   color: #999;
-`;
-const Replay = styled.p`
-display: inline-block;
-padding-left: 18px;
-border-bottom: 1px solid #f78789;
-vertical-align: bottom;
-text-decoration: none;
-color: #f78789;
-background-size: 16px 16px;
 `;
 
 const Body = styled.p``;
@@ -37,14 +29,12 @@ const Index: FC<Props> = ({ body, name, time }) => {
         width: 650,
         margin: "0 auto",
         padding: "20px",
-        border: "1px solid #d2d1d1",
+        border:"0"
       }}
     >
       <Name>{name}</Name>
       <Time>{`${CurrentHours}時${CurrentMinutes}分`}</Time>
-
       <Body>{body}</Body>
-      <Replay>スレに返信</Replay>
     </Card>
   );
 };
