@@ -72,7 +72,7 @@ const Index: FC<props> = (props) => {
         <H3>回答する</H3>
         <TextArea
           onChange={(e) => setBody(e.target.value)}
-          placeholder="回答するぜ卍"
+          placeholder="回答するぜ"
           required
           rows={4}
         />
