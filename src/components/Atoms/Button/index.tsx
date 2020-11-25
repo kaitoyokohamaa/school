@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { Button } from "antd";
+
 type Props = {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
@@ -15,7 +16,7 @@ const index: FC<Props> = (props) => {
       shape="round"
       onClick={props.onClick}
     >
-      スレットを立ててみる(無料)
+     質問を投稿する
     </Button>
   );
 };

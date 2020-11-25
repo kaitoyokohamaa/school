@@ -3,19 +3,36 @@ import Header from "../../Organisms/Header";
 import firebase from "../../../firebase";
 import HomeDetailCard from "../../Organisms/HomeDetailCards";
 import { Row, Col } from "antd";
-import Post from "../../Organisms/PostModal";
+import Reply from "../../Organisms/ReplyModal";
 import { firebasePostContents } from "../../Organisms/PostModal";
 import { HomeDiv } from "../Home";
+import ReplyCards from "../../Organisms/ReplyCards";
+import { ReplyFields } from "../../Organisms/ReplyCards";
+import styled from "styled-components";
+const HomeDetailCardWrapper = styled.div`
+  margin: 0 148px;
+`;
+const ReplyArea = styled.h2`
+background-color: #e7e7e7;
+  border:1px solid #e7e7e7
+  color: #676767;
+  font-weight: bold;
+  padding: 10px;
+  font-size: 13px;
+  width:65%;
+  margin: 0 auto;
+  margin-top:24px;
+`;
 type boardsList = {
   contentList: firebasePostContents;
 };
 export default function Index(props: any) {
   const [bords, setBoards] = useState<firebase.firestore.DocumentData>([]);
-
+  const [replys, setReplys] = useState<firebase.firestore.DocumentData>([]);
+  const boardId = props.match.params.boardId;
+  const db = firebase.firestore();
+  const ref = db.collection("board");
   useEffect(() => {
-    const boardId = props.match.params.boardId;
-    const db = firebase.firestore();
-    const ref = db.collection("board");
     let doBoardArray: firebase.firestore.DocumentData = [];
     ref
       .doc(boardId)
@@ -25,22 +42,48 @@ export default function Index(props: any) {
       });
   }, [props.match.params.boardId]);
 
+  useEffect(() => {
+    let doReplyArray: firebase.firestore.DocumentData = [];
+    ref
+      .doc(boardId)
+      .collection("reply")
+      .orderBy("createdAt", "asc")
+      .onSnapshot((res) => {
+        res.forEach(async (reply) => {
+          await doReplyArray.push(reply.data());
+        });
+        setReplys(doReplyArray);
+      });
+  }, []);
+
   return (
     <>
       <Header />
       <HomeDiv>
         <Row>
-          <Col span={24}>
+          <Col span={24} style={{ backgroundColor: "#ffff" }}>
             {bords &&
               bords.map((boardFields: boardsList) => (
-                <div key={boardFields.contentList.name}>
+                <HomeDetailCardWrapper key={boardFields.contentList.name}>
                   <HomeDetailCard
                     name={boardFields.contentList.name}
                     time={boardFields.contentList.createdAt}
                     body={boardFields.contentList.body}
                   />
-                </div>
+                  <Reply boardId={boardId} />
+                </HomeDetailCardWrapper>
               ))}
+            <div>
+              <ReplyArea>回答</ReplyArea>
+              {replys.length ? (
+                replys.map((replyFields: ReplyFields) => (
+                  <ReplyCards name={replyFields.name} body={replyFields.body} />
+                ))
+              ) : (
+                // todo 返信がない場合の処理を書く
+                <p>回答はまだありません</p>
+              )}
+            </div>
           </Col>
         </Row>
       </HomeDiv>

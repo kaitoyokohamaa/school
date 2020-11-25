@@ -7,10 +7,12 @@ const LogoStyle = styled.img`
   border-radius: 50%;
   padding-left: 18px;
 `;
+
+const LogoLocationToHome = styled.a``;
 export default function index() {
   return (
-    <>
+    <LogoLocationToHome href="../">
       <LogoStyle src={Logo} />
-    </>
+    </LogoLocationToHome>
   );
 }

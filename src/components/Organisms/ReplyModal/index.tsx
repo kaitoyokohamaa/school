@@ -1,45 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, FC } from "react";
 import { Modal, Input, Button } from "antd";
 import styled from "styled-components";
-import PostButton from "../../Atoms/Button";
+import Reply from "../../Atoms/Reply";
 import firebase from "../../../firebase";
 
 export type firebasePostContents = {
   name: string;
-  title: string;
   body: string;
   createdAt: firebase.firestore.Timestamp;
 };
-export default function Index() {
+
+type props = {
+  boardId: string;
+};
+const Wrapper = styled.div`
+  text-align: right;
+  margin-right: 14px;
+`;
+
+const Index: FC<props> = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const { TextArea } = Input;
+  const db = firebase.firestore();
+  const boardId = props.boardId;
+  const ref = db.collection("board");
+  console.log(ref);
+  console.log(boardId);
   const H3 = styled.h3``;
-  const doPosts = () => {
+  const doReply = () => {
     setModalVisible(true);
   };
 
   const handleOk = () => {
     const boardContents: firebasePostContents = {
       name,
-      title,
       body,
       createdAt: firebase.firestore.Timestamp.now(),
     };
-    if (name && title && body) {
-      firebase.firestore().collection("board").add(boardContents);
+    if (name && body) {
+      ref.doc(boardId).collection("reply").add(boardContents);
       setModalVisible(false);
     } else {
       alert("文字を入力してください");
     }
   };
   return (
-    <div>
-      <PostButton onClick={doPosts} />
+    <Wrapper>
+      <Reply onClick={doReply} />
       <Modal
-        title="質問を投稿する"
+        title="質問に回答する"
         visible={modalVisible}
         onCancel={() => setModalVisible(false)}
         width="40%"
@@ -58,20 +70,15 @@ export default function Index() {
           placeholder="名前"
           required
         />
-        <H3>タイトル</H3>
-        <Input
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="タイトル"
-          required
-        />
-        <H3>相談内容</H3>
+        <H3>回答する</H3>
         <TextArea
           onChange={(e) => setBody(e.target.value)}
-          placeholder="相談内容"
+          placeholder="回答するぜ卍"
           required
           rows={4}
         />
       </Modal>
-    </div>
+    </Wrapper>
   );
-}
+};
+export default Index;

@@ -28,14 +28,15 @@ export const ButtonWrapper = styled.div`
 
 export default function Index() {
   const [bords, setBoards] = useState<firebase.firestore.DocumentData>([]);
-  const [sliceBoards, setSliceBoards] = useState<
-    firebase.firestore.DocumentData
-  >([]);
+  const [
+    sliceBoards,
+    setSliceBoards,
+  ] = useState<firebase.firestore.DocumentData>([]);
   let sliceBoardsArray: firebase.firestore.DocumentData = [];
   useEffect(() => {
     const db = firebase.firestore();
     const ref = db.collection("board");
-    ref.onSnapshot((boards) => {
+    ref.orderBy("createdAt", "desc").onSnapshot((boards) => {
       let boardContents: firebase.firestore.DocumentData = [];
 
       boards.forEach((contents) => {

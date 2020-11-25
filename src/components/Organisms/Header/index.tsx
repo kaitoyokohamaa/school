@@ -5,7 +5,7 @@ const LogoWrapper = styled.div`
   display: flex;
   background-color: #fff;
   border-bottom: 1px solid #f0f0f0;
-  height: 60px;
+  height: 68px;
   line-height: 1.5em;
   margin-bottom: 20px;
 `;
