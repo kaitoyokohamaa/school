@@ -21,7 +21,6 @@ const Wrapper = styled.div`
 const Index: FC<props> = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState("");
-  const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const { TextArea } = Input;
   const db = firebase.firestore();
