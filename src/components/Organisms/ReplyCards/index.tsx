@@ -1,11 +1,7 @@
 import React, { FC } from "react";
 import { Card } from "antd";
 import styled from "styled-components";
-const Wrapper = styled.div`
-  padding: 30px 10px 10px;
-  background-color: #ffbcbc;
-  margin-top: 142px;
-`;
+const Wrapper = styled.div``;
 const Title = styled.p`
   font-size: 20px;
   font-weight: bold;
@@ -30,8 +26,7 @@ const Index: FC<ReplyFields> = ({ name, body }) => {
           width: 650,
           margin: "0 auto",
           padding: "20px",
-          border: "0",
-          borderRadius: "5px",
+          border: "1px solid rgb(210, 209, 209)",
         }}
       >
         <Body>{body}</Body>

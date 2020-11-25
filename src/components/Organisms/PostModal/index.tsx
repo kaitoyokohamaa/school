@@ -28,8 +28,12 @@ export default function Index() {
       body,
       createdAt: firebase.firestore.Timestamp.now(),
     };
-    firebase.firestore().collection("board").add(boardContents);
-    setModalVisible(false);
+    if (name && title && body) {
+      firebase.firestore().collection("board").add(boardContents);
+      setModalVisible(false);
+    } else {
+      alert("文字を入力してください");
+    }
   };
   return (
     <div>

@@ -8,6 +8,7 @@ const Wrapper = styled.div`
   text-decoration: none;
   color: #f78789;
   background-size: 16px 16px;
+  margin-right: 14px;
 `;
 const Replay = styled.a`
   text-decoration: none;

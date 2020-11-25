@@ -9,8 +9,19 @@ import { HomeDiv } from "../Home";
 import ReplyCards from "../../Organisms/ReplyCards";
 import { ReplyFields } from "../../Organisms/ReplyCards";
 import styled from "styled-components";
-const Wrapper = styled.div`
+const HomeDetailCardWrapper = styled.div`
   margin: 0 148px;
+`;
+const ReplyArea = styled.h2`
+background-color: #e7e7e7;
+  border:1px solid #e7e7e7
+  color: #676767;
+  font-weight: bold;
+  padding: 10px;
+  font-size: 13px;
+  width:65%;
+  margin: 0 auto;
+  margin-top:24px;
 `;
 type boardsList = {
   contentList: firebasePostContents;
@@ -50,24 +61,29 @@ export default function Index(props: any) {
       <Header />
       <HomeDiv>
         <Row>
-          <Col span={24}>
+          <Col span={24} style={{ backgroundColor: "#ffff" }}>
             {bords &&
               bords.map((boardFields: boardsList) => (
-                <Wrapper key={boardFields.contentList.name}>
+                <HomeDetailCardWrapper key={boardFields.contentList.name}>
                   <HomeDetailCard
                     name={boardFields.contentList.name}
                     time={boardFields.contentList.createdAt}
                     body={boardFields.contentList.body}
                   />
                   <Reply boardId={boardId} />
-                </Wrapper>
+                </HomeDetailCardWrapper>
               ))}
-            {replys.length
-              ? replys.map((replyFields: ReplyFields) => (
+            <div>
+              <ReplyArea>回答</ReplyArea>
+              {replys.length ? (
+                replys.map((replyFields: ReplyFields) => (
                   <ReplyCards name={replyFields.name} body={replyFields.body} />
                 ))
-              : // todo 返信がない場合の処理を書く
-                console.log(replys)}
+              ) : (
+                // todo 返信がない場合の処理を書く
+                <p>回答はまだありません</p>
+              )}
+            </div>
           </Col>
         </Row>
       </HomeDiv>

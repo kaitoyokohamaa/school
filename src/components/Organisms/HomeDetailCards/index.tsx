@@ -21,19 +21,21 @@ type Props = {
 };
 
 const Index: FC<Props> = ({ body, name, time }) => {
-  const CurrentHours = time.toDate().getHours();
-  const CurrentMinutes = time.toDate().getMinutes();
+  const CurrentYear = time.toDate().getFullYear();
+  const CurrentMonth = time.toDate().getMonth() + 1;
+  const CurrentDay = time.toDate().getDay() + 22;
   return (
     <Card
       style={{
         width: 650,
         margin: "0 auto",
+        marginTop: "20px",
         padding: "20px",
-        border:"0"
+        border: "1px solid #d2d1d1",
       }}
     >
       <Name>{name}</Name>
-      <Time>{`${CurrentHours}時${CurrentMinutes}分`}</Time>
+      <Time>{`${CurrentYear}年${CurrentMonth}月${CurrentDay}日`}</Time>
       <Body>{body}</Body>
     </Card>
   );

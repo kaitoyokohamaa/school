@@ -3,7 +3,7 @@ import { Modal, Input, Button } from "antd";
 import styled from "styled-components";
 import Reply from "../../Atoms/Reply";
 import firebase from "../../../firebase";
-import { RouteComponentProps } from "react-router-dom";
+
 export type firebasePostContents = {
   name: string;
   body: string;
@@ -40,8 +40,12 @@ const Index: FC<props> = (props) => {
       body,
       createdAt: firebase.firestore.Timestamp.now(),
     };
-    ref.doc(boardId).collection("reply").add(boardContents);
-    setModalVisible(false);
+    if (name && body) {
+      ref.doc(boardId).collection("reply").add(boardContents);
+      setModalVisible(false);
+    } else {
+      alert("文字を入力してください");
+    }
   };
   return (
     <Wrapper>
