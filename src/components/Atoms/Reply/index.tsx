@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { SendOutlined } from "@ant-design/icons";
+
 const Wrapper = styled.div`
   display: inline-block;
   border-bottom: 1px solid #f78789;

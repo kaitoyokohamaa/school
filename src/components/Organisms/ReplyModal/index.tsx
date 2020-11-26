@@ -3,7 +3,7 @@ import { Modal, Input, Button } from "antd";
 import styled from "styled-components";
 import Reply from "../../Atoms/Reply";
 import firebase from "../../../firebase";
-
+import MediaQuery from "react-responsive";
 export type firebasePostContents = {
   name: string;
   body: string;
@@ -48,35 +48,68 @@ const Index: FC<props> = (props) => {
   };
   return (
     <Wrapper>
-      <Reply onClick={doReply} />
-      <Modal
-        title="質問に回答する"
-        visible={modalVisible}
-        onCancel={() => setModalVisible(false)}
-        width="40%"
-        footer={[
-          <Button key="back" onClick={() => setModalVisible(false)}>
-            キャンセル
-          </Button>,
-          <Button key="submit" type="default" onClick={handleOk}>
-            投稿する
-          </Button>,
-        ]}
-      >
-        <H3>名前</H3>
-        <Input
-          onChange={(e) => setName(e.target.value)}
-          placeholder="名前"
-          required
-        />
-        <H3>回答する</H3>
-        <TextArea
-          onChange={(e) => setBody(e.target.value)}
-          placeholder="回答するぜ"
-          required
-          rows={4}
-        />
-      </Modal>
+      <MediaQuery minDeviceWidth={768}>
+        <Reply onClick={doReply} />
+        <Modal
+          title="質問に回答する"
+          visible={modalVisible}
+          onCancel={() => setModalVisible(false)}
+          width="40%"
+          footer={[
+            <Button key="back" onClick={() => setModalVisible(false)}>
+              キャンセル
+            </Button>,
+            <Button key="submit" type="default" onClick={handleOk}>
+              投稿する
+            </Button>,
+          ]}
+        >
+          <H3>名前</H3>
+          <Input
+            onChange={(e) => setName(e.target.value)}
+            placeholder="名前"
+            required
+          />
+          <H3>回答する</H3>
+          <TextArea
+            onChange={(e) => setBody(e.target.value)}
+            placeholder="回答するぜ"
+            required
+            rows={4}
+          />
+        </Modal>
+      </MediaQuery>
+      <MediaQuery maxDeviceWidth={767}>
+        <Reply onClick={doReply} />
+        <Modal
+          title="質問に回答する"
+          visible={modalVisible}
+          onCancel={() => setModalVisible(false)}
+          width="80%"
+          footer={[
+            <Button key="back" onClick={() => setModalVisible(false)}>
+              キャンセル
+            </Button>,
+            <Button key="submit" type="default" onClick={handleOk}>
+              投稿する
+            </Button>,
+          ]}
+        >
+          <H3>名前</H3>
+          <Input
+            onChange={(e) => setName(e.target.value)}
+            placeholder="名前"
+            required
+          />
+          <H3>回答する</H3>
+          <TextArea
+            onChange={(e) => setBody(e.target.value)}
+            placeholder="回答するぜ"
+            required
+            rows={4}
+          />
+        </Modal>
+      </MediaQuery>
     </Wrapper>
   );
 };

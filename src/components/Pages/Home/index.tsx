@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import Card from "../../Organisms/Cards";
 import Post from "../../Organisms/PostModal";
 import MoreButton from "../../Atoms/MoreButton";
@@ -8,7 +8,7 @@ import Header from "../../Organisms/Header";
 import firebase from "../../../firebase";
 import { firebasePostContents } from "../../Organisms/PostModal";
 import { Link } from "react-router-dom";
-
+import MediaQuery from "react-responsive";
 type boardsList = {
   boardIds: string;
   contentList: firebasePostContents;
@@ -20,13 +20,17 @@ export const HomeDiv = styled.div`
   margin: 0 auto;
   padding: 50px 0;
 `;
-export const ButtonWrapper = styled.div`
+const ButtonWrapper = styled.div`
   text-align: center;
   width: 600px;
   margin-top: 24px;
 `;
+const SpButtonWrapper = styled.div`
+  text-align: center;
+  margin-top: 24px;
+`;
 
-export default function Index() {
+const Index: FC = () => {
   const [bords, setBoards] = useState<firebase.firestore.DocumentData>([]);
   const [
     sliceBoards,
@@ -57,16 +61,40 @@ export default function Index() {
     sliceBoardsArray = bords;
     setSliceBoards(sliceBoardsArray);
   };
-  console.log(sliceBoardsArray);
+
   return (
     <>
       <Header />
-      <HomeDiv>
+      <MediaQuery minDeviceWidth={768}>
+        <HomeDiv>
+          <Row>
+            <Col span={8}>
+              <Post />
+            </Col>
+            <Col span={16}>
+              {sliceBoards.length > 0 &&
+                sliceBoards.map((boardFields: boardsList) => (
+                  <div key={boardFields.boardIds}>
+                    <Link to={`/home/${boardFields.boardIds}`}>
+                      <Card
+                        title={boardFields.contentList.title}
+                        body={boardFields.contentList.body}
+                      />
+                    </Link>
+                  </div>
+                ))}
+
+              <ButtonWrapper onClick={handleMore}>
+                {sliceBoards && sliceBoards.length < 6 && <MoreButton />}
+              </ButtonWrapper>
+            </Col>
+          </Row>
+        </HomeDiv>
+      </MediaQuery>
+      <MediaQuery maxDeviceWidth={767}>
         <Row>
-          <Col span={8}>
+          <Col span={24}>
             <Post />
-          </Col>
-          <Col span={16}>
             {sliceBoards.length > 0 &&
               sliceBoards.map((boardFields: boardsList) => (
                 <div key={boardFields.boardIds}>
@@ -79,12 +107,14 @@ export default function Index() {
                 </div>
               ))}
 
-            <ButtonWrapper onClick={handleMore}>
+            <SpButtonWrapper onClick={handleMore}>
               {sliceBoards && sliceBoards.length < 6 && <MoreButton />}
-            </ButtonWrapper>
+            </SpButtonWrapper>
           </Col>
         </Row>
-      </HomeDiv>
+      </MediaQuery>
     </>
   );
-}
+};
+
+export default Index;

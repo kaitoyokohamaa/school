@@ -9,9 +9,11 @@ import { HomeDiv } from "../Home";
 import ReplyCards from "../../Organisms/ReplyCards";
 import { ReplyFields } from "../../Organisms/ReplyCards";
 import styled from "styled-components";
+import MediaQuery from "react-responsive";
 const HomeDetailCardWrapper = styled.div`
   margin: 0 148px;
 `;
+const SpHomeDetailCardWrapper = styled.div``;
 const ReplyArea = styled.h2`
 background-color: #e7e7e7;
   border:1px solid #e7e7e7
@@ -20,6 +22,17 @@ background-color: #e7e7e7;
   padding: 10px;
   font-size: 13px;
   width:65%;
+  margin: 0 auto;
+  margin-top:24px;
+`;
+const SpReplyArea = styled.h2`
+background-color: #e7e7e7;
+  border:1px solid #e7e7e7
+  color: #676767;
+  font-weight: bold;
+  padding: 10px;
+  font-size: 13px;
+  width:100%;
   margin: 0 auto;
   margin-top:24px;
 `;
@@ -59,22 +72,55 @@ export default function Index(props: any) {
   return (
     <>
       <Header />
-      <HomeDiv>
+      <MediaQuery minDeviceWidth={768}>
+        <HomeDiv>
+          <Row>
+            <Col span={24} style={{ backgroundColor: "#ffff" }}>
+              {bords &&
+                bords.map((boardFields: boardsList) => (
+                  <HomeDetailCardWrapper key={boardFields.contentList.name}>
+                    <HomeDetailCard
+                      name={boardFields.contentList.name}
+                      time={boardFields.contentList.createdAt}
+                      body={boardFields.contentList.body}
+                    />
+                    <Reply boardId={boardId} />
+                  </HomeDetailCardWrapper>
+                ))}
+              <div>
+                <ReplyArea>回答</ReplyArea>
+                {replys.length ? (
+                  replys.map((replyFields: ReplyFields) => (
+                    <ReplyCards
+                      name={replyFields.name}
+                      body={replyFields.body}
+                    />
+                  ))
+                ) : (
+                  // todo 返信がない場合の処理を書く
+                  <p>回答はまだありません</p>
+                )}
+              </div>
+            </Col>
+          </Row>
+        </HomeDiv>
+      </MediaQuery>
+      <MediaQuery maxDeviceWidth={767}>
         <Row>
           <Col span={24} style={{ backgroundColor: "#ffff" }}>
             {bords &&
               bords.map((boardFields: boardsList) => (
-                <HomeDetailCardWrapper key={boardFields.contentList.name}>
+                <SpHomeDetailCardWrapper key={boardFields.contentList.name}>
                   <HomeDetailCard
                     name={boardFields.contentList.name}
                     time={boardFields.contentList.createdAt}
                     body={boardFields.contentList.body}
                   />
                   <Reply boardId={boardId} />
-                </HomeDetailCardWrapper>
+                </SpHomeDetailCardWrapper>
               ))}
             <div>
-              <ReplyArea>回答</ReplyArea>
+              <SpReplyArea>回答</SpReplyArea>
               {replys.length ? (
                 replys.map((replyFields: ReplyFields) => (
                   <ReplyCards name={replyFields.name} body={replyFields.body} />
@@ -86,7 +132,7 @@ export default function Index(props: any) {
             </div>
           </Col>
         </Row>
-      </HomeDiv>
+      </MediaQuery>
     </>
   );
 }
