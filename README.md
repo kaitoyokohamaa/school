@@ -3,8 +3,8 @@
 ### **https://schoolboards.herokuapp.com/**  
 　
 
-## :art: Character Design
+## :art: App IMG
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/55383786/99496558-e274ee00-29b7-11eb-988b-5148e3a720ff.png" width=70%>  
+  <img src="https://user-images.githubusercontent.com/55383786/100537086-bcc5cf80-3268-11eb-8d1f-9d049690244c.png" width=70%>  
 </p>　
