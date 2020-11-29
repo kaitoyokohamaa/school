@@ -1,11 +1,8 @@
 ## 🌐 App URL
 
-### **https://cupramen-timer.firebaseapp.com**  
+### **https://schoolboards.herokuapp.com/**  
 　
-## 💬 Usage
 
-`$ git clone https://github.com/aocattleya/Ramen-Timer.git`  
-　
 ## :art: Character Design
 
 <p align="center">
